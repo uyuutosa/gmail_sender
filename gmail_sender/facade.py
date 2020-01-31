@@ -54,7 +54,7 @@ class GmailSender:
     def send(self, to_address, subject, body, attach_lst=[]):
         msg = self._setMessage(to_address, subject, body)
         for attach in attach_lst:
-            msg = self._setAttach(msg)
+            msg = self._setAttach(attach, msg)
         self._send(msg)
         print(emoji.emojize(":envelope: Sent Email. :envelope:"))
 

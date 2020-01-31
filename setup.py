@@ -5,7 +5,7 @@ requires = ["requests>=2.14.2"]
 
 setup(
     name='gmail_sender',
-    version='0.1.0',
+    version='0.1.1',
     description='Simple Email sender with Gmail',
     url='https://github.com/uyuutosa/gmail_sender',
     author='uyuutosa',
