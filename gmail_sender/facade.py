@@ -14,17 +14,19 @@ class GmailSender:
         self.mime_dic = {"jpeg": "image",
                          "jpg": "image",
                          "png": "image"}
+        host, port = 'smtp.gmail.com', 587
+        self.gmail=SMTP(host, port)
+        self.gmail.starttls() 
+        self.gmail.login(self.from_address, self.password)
 
 
     def _setMessage(self, to_address, subject, body):
 
-        # メールヘッダー
         msg = MIMEMultipart()
         msg['Subject'] = subject
         msg['From'] = self.from_address
         msg['To'] = to_address
 
-        # メール本文
         body = MIMEText(body)
         msg.attach(body)
         return msg
@@ -33,8 +35,7 @@ class GmailSender:
         name = path.split("/")[-1]
         ext = name.split('.')[-1]
         
-        # 添付ファイルの設定
-        attach_file = {'name': name, 'path': path} # nameは添付ファイル名。pathは添付ファイルの位置を指定
+        attach_file = {'name': name, 'path': path}
         attachment = MIMEBase(self.mime_dic[ext], ext)
         file = open(attach_file['path'], 'rb+')
         attachment.set_payload(file.read())
@@ -45,11 +46,7 @@ class GmailSender:
         return msg
 
     def _send(self, msg): 
-        host, port = 'smtp.gmail.com', 587
-        gmail=SMTP(host, port)
-        gmail.starttls() 
-        gmail.login(self.from_address, self.password)
-        gmail.send_message(msg)
+        self.gmail.send_message(msg)
 
     def send(self, to_address, subject, body, attach_lst=[]):
         msg = self._setMessage(to_address, subject, body)
